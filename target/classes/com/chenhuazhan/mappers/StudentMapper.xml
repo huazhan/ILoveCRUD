@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chenhuazhan.dao.StudentDao">
+	<resultMap type="Student" id="StudentResult">
+		<result property="id" column="id"/>
+		<result property="name" column="name"/>
+		<result property="age" column="age"/>
+		<result property="gender" column="gender"/>
+		<result property="address" column="address"/>
+	</resultMap>
+	
+	<select id="getList" parameterType="Map" resultMap="StudentResult">
+		select id,name,gender,age,address from t_student
+	</select>
+	
+	<select id="getTotal" parameterType="Map" resultType="Long">
+		select count(*) from t_student
+	</select>
+	
+	<insert id="add" useGeneratedKeys="true" keyProperty="id" parameterType="Student">
+		INSERT INTO t_student VALUES(NULL,#{name},#{age},#{gender},#{address})
+	</insert>
+	
+	<update id="update" parameterType="Student">
+		update t_student
+		<set>
+			<if test="name!=null and name!=''">
+				name = #{name},
+			</if>
+			<if test="age!=null and age!=''">
+				age = #{age},
+			</if>
+			<if test="gender!=null and gender!='' or gender == 0">
+				gender = #{gender},
+			</if>
+			<if test="address!=null and address!=''">
+				address = #{address},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from t_student where id = #{id}
+	</delete>
+	
+	<insert id="importData" useGeneratedKeys="true" keyProperty="id" parameterType="Student">
+		INSERT INTO t_student VALUES(NULL,#{name},#{age},#{gender},#{address})
+	</insert>
+	
+	<select id="exportData" resultMap="StudentResult">
+		select id,name,gender,age,address from t_student
+	</select>
+	
+</mapper>
